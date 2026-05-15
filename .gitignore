@@ -1,0 +1,6 @@
+swissprot_data/
+test_train_data/final_files/neg_*.fasta
+*.blast
+*.pdb
+test_train_data/final_files/sp_negs.fasta
+__pycache__/

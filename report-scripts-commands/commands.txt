@@ -1,0 +1,1000 @@
+ 1119  cut -f1 positives.bl8 | head -n 10
+ 1120  ls
+ 1121  cut -f1 pdb_kunitz_rp_strali.fasta | head -n 10
+ 1122  grep -oP 'sp\|\K[^|]+' redundant_sequences.txt | sort | uniq > converted_redundant.txt
+ 1123  grep -f converted_redundant.txt pdb_kunitz_rp_strali.fasta > found_in_clusters.txt
+ 1124  cd ../..
+ 1125  cd swissprot_data/
+ 1126  ls
+ 1127  wc negative_set.fasta 
+ 1128  grep ">" negative_set.fasta | wc
+ 1129  awk 'BEGIN{srand()} {if(/^>/){if(rand() <= 0.5) print > "positive_train.fasta"; else print > "positive_test.fasta"} else {if(rand() <= 0.5) print >> "positive_train.fasta"; else print >> "positive_test.fasta"}}' filtered_positive_set.fasta
+ 1130  مس
+ 1131  ls
+ 1132  awk 'BEGIN{srand()} {if(/^>/){if(rand() <= 0.5) print > "negative_train.fasta"; else print > "negative_test.fasta"} else {if(rand() <= 0.5) print >> "negative_train.fasta"; else print >> "negative_test.fasta"}}' negative_set.fasta
+ 1133  grep ">" positive_train.fasta | wc
+ 1134  grep ">" positive_test.fasta | wc
+ 1135  grep ">" negative_train.fasta | wc
+ 1136  grep ">" negative_test.fasta | wc
+ 1137  ls
+ 1138  cat positive_test.fasta negative_test.fasta > combined_test.fasta
+ 1139  cat positive_train.fasta negative_train.fasta > combined_train.fasta
+ 1140  ls
+ 1141  hmmsearch --noali --max --tblout output.txt -Z 1 bpti-kunitz.hmm combined_train.fasta 
+ 1142  head -n 10 combined_train.fasta
+ 1143  grep '^>' combined_train.fasta | wc -l
+ 1144  head -n 5 combined_train.fasta
+ 1145  grep '^>' combined_train.fasta | wc -l
+ 1146  head -n 5 combined_train.fasta
+ 1147  sed -i '1s/^/>seq1 /' combined_train.fasta
+ 1148  hmmsearch --noali --max --tblout output.txt -Z 1 bpti-kunitz.hmm combined_train.fasta 
+ 1149  cd ../..
+ 1150  cd final-project-tasks/PDB-data
+ 1151  ls
+ 1152  cd ../HMM/
+ 1153  ls
+ 1154  hmmsearch --noali --max --tblout output.txt -Z 1 bpti-kunitz.hmm combined_train.fasta 
+ 1155  ls
+ 1156  grep ">" negative_train.fasta 
+ 1157  ls
+ 1158  grep ">" negative_train.fasta |wc
+ 1159  grep ">" negative_test.fasta |wc
+ 1160  wc negative_t* positive_t* combined_t*
+ 1161  grep ">" negative_t* positive_t* combined_t*| wc
+ 1162  grep ">" negative_t* positive_t* combined_t*| wc -l
+ 1163  grep ">" negative_train.fasta |wc
+ 1164  grep ">" negative_test.fasta |wc
+ 1165  grep ">" positive_test.fasta |wc
+ 1166  grep ">" positive_train.fasta |wc
+ 1167  grep ">" combined_train.fasta |wc
+ 1168  grep ">" combined_test.fasta |wc
+ 1169  cd cd ../../
+ 1170  cd ..
+ 1171  cd final-project-tasks/
+ 1172  cd ..
+ 1173  mv final-project-tasks final_step-tests
+ 1174  ls
+ 1175  cd project/final-project-tasks/
+ 1176  cd ../..
+ 1177  cd final_step-tests/
+ 1178  cd HMM/
+ 1179  ls
+ 1180  grep ">" pdb_kunitz_rp_strali.fasta | sed 's/>//' | sed 's/:/_/' > ids_to_keep_forseq.txt
+ 1181  ls
+ 1182  awk 'BEGIN {
+ 1183    while ((getline < "ids_to_keep_forseq.txt") > 0) ids[$1] = 1
+ 1184  }
+ 1185  {
+ 1186    if ($0 ~ /^>/) {
+ 1187      id = substr($0, 2)
+ 1188      keep = ids[id]
+ 1189    }
+ 1190    if (keep) print
+ 1191  }' pdb_kunitz_rp.fasta > pdb_kunitz_rp_clean.fasta
+ 1192  awk 'BEGIN {
+ 1193    while ((getline < "ids_to_keep_forseq.txt") > 0) ids[$1] = 1
+ 1194  }
+ 1195  {
+ 1196    if ($0 ~ /^>/) {
+ 1197      id = substr($0, 2)
+ 1198      keep = ids[id]
+ 1199    }
+ 1200    if (keep) print
+ 1201  }' pdb_kunitz_nr.fasta > pdb_kunitz_rp_clean.fasta
+ 1202  grep ">" pdb_kunitz_nr.fasta 
+ 1203  grep ">" pdb_kunitz_nr.fasta | wc
+ 1204  ls
+ 1205  grep ">" pdb_kunitz_rp_clean.fasta | wc
+ 1206  wc ids_to_keep_forseq.txt 
+ 1207  rm -f ids_to_keep_forseq.txt
+ 1208  ls
+ 1209  cd ../..
+ 1210  cd final_step-tests/
+ 1211  cd PDB-data/
+ 1212  ls
+ 1213  cd ../swissprot_data/
+ 1214  ls
+ 1215  wc uniprot_sprot.fasta 
+ 1216  ls
+ 1217  wc filtered_positive_set.fasta 
+ 1218  cd others/
+ 1219  ls
+ 1220  wc positive_set.fasta 
+ 1221  cd ../
+ 1222  ls
+ 1223  cp ./others/positive_set.fasta .
+ 1224  ls
+ 1225  cd others/
+ 1226  ls
+ 1227  cd ..
+ 1228  ls
+ 1229  makeblastdb -in all_kunitz.fasta -input_type fasta -dbtype prot -out all_kunitz.fasta
+ 1230  ls
+ 1231  blastp -query pdb_kunitz_rp_clean.fasta -db all_kunitz.fasta -out tmp_pdb_kunitz_rp_clean.blast -outfmt 7
+ 1232  ls
+ 1233  grep -v "^#" tmp_pdb_kunitz_rp_clean.blast | awk '{if ($3>=95 && $4>=50) print $2}' | sort -u | cut -d "|" -f 2 > tmp_pdb_kunitz_rp_clean_ids.txt
+ 1234  ls
+ 1235  grep ">" all_kunitz.fasta | cut -d "|" -f 2 > tmp_all_kunitz.id
+ 1236  echo 'Creating positive test files (set1 and set2)...'
+ 1237  ls
+ 1238  wc tmp_pdb_kunitz_rp_clean_ids.txt 
+ 1239  wc tmp_pdb_kunitz.id
+ 1240  wc tmp_all_kunitz.id 
+ 1241  wc tmp_pdb_kunitz_rp_clean_ids.txt 
+ 1242  wc tmp_all_kunitz.id 
+ 1243  comm -23 <(sort tmp_all_kunitz.id) <(sort tmp_pdb_kunitz_rp_clean_ids.txt) > tmp_to_keep.ids
+ 1244  sort -R tmp_to_keep.ids > tmp_random_ok_kunitz.id
+ 1245  head -n 184 tmp_random_ok_kunitz.id > tmp_pos_1.id
+ 1246  tail -n 184 tmp_random_ok_kunitz.id > tmp_pos_2.id
+ 1247  wc tmp_to_keep.ids 
+ 1248  touch ./others/get_seq.py
+ 1249  ls
+ 1250  wc tmp_pos_1.id 
+ 1251  wc tmp_pos_2.id 
+ 1252  python3 get_seq.py tmp_pos_1.id uniprot_sprot.fasta > pos_1.fasta
+ 1253  python3 ./others/get_seq.py tmp_pos_1.id uniprot_sprot.fasta > pos_1.fasta
+ 1254  grep ">" pos_1.fasta 
+ 1255  grep ">" pos_1.fasta |wc
+ 1256  python3 get_seq.py tmp_pos_2.id uniprot_sprot.fasta > pos_2.fasta
+ 1257  python3 ./others/get_seq.py tmp_pos_2.id uniprot_sprot.fasta > pos_2.fasta
+ 1258  ls
+ 1259  grep ">" pos_1.fasta |wc
+ 1260  grep ">" pos_2.fasta |wc
+ 1261  grep ">" uniprot_sprot.fasta | cut -d "|" -f 2 > tmp_sp.id
+ 1262  wc tmp_sp.id 
+ 1263  comm -23 <(sort tmp_sp.id) <(sort tmp_all_kunitz.id) > tmp_sp_negs.ids
+ 1264  wc tmp_sp_negs.ids 
+ 1265  sort -R tmp_sp_negs.ids > tmp_random_sp_negs.id
+ 1266  head -n 286286 tmp_random_sp_negs.id > tmp_neg_1.id
+ 1267  tail -n 286286 tmp_random_sp_negs.id > tmp_neg_2.id
+ 1268  wc tmp_neg_1.id 
+ 1269  wc tmp_neg_2.id 
+ 1270  wc tmp_random_sp_negs.id 
+ 1271  python3 get_seq.py tmp_neg_1.id uniprot_sprot.fasta > neg_1.fasta
+ 1272  python3 ./get_seq.py tmp_neg_1.id uniprot_sprot.fasta > neg_1.fasta
+ 1273  python3 ./others/get_seq.py tmp_neg_1.id uniprot_sprot.fasta > neg_1.fasta
+ 1274  python3 ./others/get_seq.py tmp_neg_2.id uniprot_sprot.fasta > neg_2.fasta
+ 1275  grep ">" neg_1.fasta |wc
+ 1276  grep ">" neg_2.fasta |wc
+ 1277  grep ">" filtered_positive_set.fasta |wc
+ 1278  cd ../
+ 1279  cd ..
+ 1280  ls
+ 1281  cd project/
+ 1282  ls
+ 1283  cd final_step-tests1
+ 1284  cd final_step-tests_1
+ 1285  mv final_step-tests-1 final_tests_1
+ 1286  cd final_tests_1/
+ 1287  ls
+ 1288  cd swissprot_data/
+ 1289  ls
+ 1290  cd tmp-files/
+ 1291  ls
+ 1292  cd ../others/
+ 1293  ls
+ 1294  cd ../..
+ 1295  cd ../
+ 1296  cd final_tests_1/
+ 1297  ls
+ 1298  cd HMM/
+ 1299  LS
+ 1300  ls
+ 1301  hmmsearch -Z 1000 --max --tblout pos_1_strali.out bpti-kunitz.hmm pos_1.fasta
+ 1302  ls
+ 1303  grep -v "^#" pos_1_strali.out |cut -f1 |less
+ 1304  grep -v "^#" pos_1_strali.out |cut -d " " -f1 |less
+ 1305  grep -v "^#" pos_1_strali.out |cut -d " " -f1 |wc
+ 1306  grep -v "^#" pos_2_strali.out |cut -d " " -f1 |wc
+ 1307  jobs
+ 1308  hmmsearch -h |less
+ 1309  grep "^#" pos_1_strali.out |less
+ 1310  hmmsearch --max --tblout pos_1_strali.out bpti-kunitz.hmm pos_1.fasta
+ 1311  grep -v "^#" pos_1_strali.out |cut -d " " -f1 |wc
+ 1312  hmmsearch --max --tblout pos_2_strali.out bpti-kunitz.hmm pos_2.fasta
+ 1313  grep -v "^#" pos_2_strali.out |cut -d " " -f1 |wc
+ 1314  ls
+ 1315  grep -v "^#" pos_2_strali.out |awk 
+ 1316  grep -v "^#" pos_1strali.out |cut -d " " -f1 |wc
+ 1317  grep -v "^#" pos_1strali.out |cut -d " " -f 1,5 |less
+ 1318  grep -v "^#" pos1_1strali.out |cut -d " " -f 1,5 |less
+ 1319  grep -v "^#" pos_1_strali.out |awk '{print $1, !5}'
+ 1320  grep -v "^#" pos_1_strali.out |awk '{print $1, $5}'| less
+ 1321  grep -v "^#" pos_1_strali.out |awk '{split($1, a, "|"); print $1, $5}'| less
+ 1322  grep -v "^#" pos_1_strali.out |awk '{split($1, a, "\|"); print $1, $5}'| less
+ 1323  grep -v "^#" pos_1_strali.out |awk '{split($1, a, "\|"); print a[2], $5}'| less
+ 1324  grep -v "^#" pos_1_strali.out |awk '{split($1, a, "\|"); print a[2], $5, $8}'| less
+ 1325  grep -v "^#" pos_1_strali.out |awk '{split($1, a, "\|"); print a[2],1, $5, $8}'| less
+ 1326  grep -v "^#" pos_1_strali.out |awk '{split($1, a, "\|"); print a[2]"\t"1"\t"$5"\t"$8}'| less
+ 1327  hmmsearch -Z 1000 --max --tblout neg_1_strali.out bpti-kunitz.hmm neg_1.fasta
+ 1328  hmmsearch -Z 1000 --max --tblout neg_2_strali.out bpti-kunitz.hmm neg_2.fasta
+ 1329  ls
+ 1330  hmmsearch -Z 1000 --max --tblout pos_2_strali.out bpti-kunitz.hmm pos_2.fasta
+ 1331  hmmsearch -Z 1000 --max --tblout pos_1_strali.out bpti-kunitz.hmm pos_1.fasta
+ 1332  jobs
+ 1333  grep -v "^#" pos_2_strali.out | awk '{split($1,a,"|"); print a[2],1,$5,$8}' |tr " " "\t"> pos_2.class
+ 1334  ls
+ 1335  wc pos_1.class 
+ 1336  wc pos_2.class 
+ 1337  awk '{print $1}' pos_1.class |sort -u |wc
+ 1338  awk '{print $1}' pos_2.class |sort -u |wc
+ 1339  jobs
+ 1340  hmmsearch -Z 1000 --max --tblout neg_2_strali.out bpti-kunitz.hmm neg_2.fasta
+ 1341  hmmsearch -Z 1000 --max --tblout neg_1_strali.out bpti-kunitz.hmm neg_1.fasta
+ 1342  grep -v "^#" neg_1.ou1 |wc
+ 1343  grep -v "^#" neg_1_strali.out |wc
+ 1344  grep -v "^#" neg_2_strali.out |wc
+ 1345  grep -v "^#" neg_2_strali.out | awk '{split($1,a,"\|"); print a[2],0,$5,$8}' |tr " " "\t"> neg_2.class
+ 1346  grep -v "^#" neg_1_strali.out | awk '{split($1,a,"\|"); print a[2],0,$5,$8}' |tr " " "\t"> neg_1.class
+ 1347  wc neg_1.ids
+ 1348  wc ../swissprot_data/tmp-files/tmp_neg_1.id 
+ 1349  comm
+ 1350  comm -23 <(sort ../swissprot_data/tmp-files/tmp_neg_1.id) <(cut -f 1 neg_1.class | sort) | awk '{print $1"\t"0"\t"10.0"\t"10.0}' >> neg_1.class
+ 1351  wc neg_2.class 
+ 1352  comm -23 <(sort ../swissprot_data/tmp-files/tmp_neg_2.id) <(cut -f 1 neg_2.class | sort) | awk '{print $1"\t"0"\t"10.0"\t"10.0}' >> neg_2.class
+ 1353  wc neg_2.class 
+ 1354  wc neg_1.class 
+ 1355  cat pos_1.class neg_1.class > set_1.class
+ 1356  cat pos_2.class neg_2.class > set_2.class
+ 1357  python performance.py set_1.class 1e-5
+ 1358  for i in 'seq 1 12'; do python performance.py set_1.class 1e-$i; done
+ 1359  set1_best_evalue_full_seq=$(
+ 1360      for i in $(seq 1 9); do
+ 1361          python3 performance.py set_1.class 1e-"$i"
+ 1362      done | grep 'threshold' | grep 'True' | sort -nrk 6 | head -n 1 | awk '{print $2}'
+ 1363  )
+ 1364  echo -e "BEST THRESHOLD OBTAINED FROM SET_1 FULL SEQUENCE: $set1_best_evalue_full_seq" > hmm_results_strali.txt
+ 1365  echo -e "\nPERFORMANCES SET_2 USING E-VALUE THRESHOLD OF SET_1 - FULL SEQUENCES" >> hmm_results_strali.txt
+ 1366  cd ../..
+ 1367  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/
+ 1368  cd Module-Emidio/project/
+ 1369  cd final_tests_1/
+ 1370  ls
+ 1371  cd P
+ 1372  cd PDB-data/
+ 1373  ls
+ 1374  cd make_db_new/
+ 1375  ls
+ 1376  python get_seq.py ok_kunitz.ids all_kunitz.fasta | wc
+ 1377  wc to_remove.ids 
+ 1378  wc tmp_to_keep.ids 
+ 1379  wc tmp_pdb_kunitz_rp_clean_ids.txt 
+ 1380  wc tmp_all_kunitz.id 
+ 1381  wc ok_kunitz.ids 
+ 1382  wc all_kunitz.id 
+ 1383  python get_seq.py ok_kunitz.ids all_kunitz.fasta |grep ">" |wc
+ 1384  python get_seq.py to_remove.ids all_kunitz.fasta |grep ">" |wc
+ 1385  cd ../../swissprot_data/
+ 1386  ls
+ 1387  grep ">" uniprot_sprot.fasta |less
+ 1388  grep ">" uniprot_sprot.fasta | cut -d "|" -f2 |less
+ 1389  grep ">" uniprot_sprot.fasta | cut -d "|" -f2 > ../PDB-data/make_db_new/sp.ids
+ 1390  cd ../PDB-data/make_db_new/
+ 1391  ls
+ 1392  wc sp.ids 
+ 1393  ls
+ 1394  wc all_kunitz.fasta
+ 1395  echo "==== COMMAND 1 ===="
+ 1396  ls
+ 1397  your_script.sh | sed 's/ls -l/\x1b[31m&\x1b[0m/g' > output.txt
+ 1398  wc all_kunitz.fasta | sed 's/ls -l/\x1b[31m&\x1b[0m/g' > output.txt
+ 1399  wc sp.ids 
+ 1400  grep ">" uniprot_sprot.fasta | cut -d "|" -f2 > ../PDB-data/make_db_new/sp.ids
+ 1401  ls
+ 1402  less sp.ids 
+ 1403  head -n 5 output.txt 
+ 1404  head -n 5 ok_kunitz.ids 
+ 1405  head -n 5 tmp_to_keep.ids 
+ 1406  head -n 5 to_remove.ids 
+ 1407  head -n 5 tmp_pdb_kunitz_rp_clean_ids.txt 
+ 1408  ls
+ 1409  head -n 5 all_kunitz.id 
+ 1410  head -n 5 tmp_all_kunitz.id 
+ 1411  head -n 5 ok_kunitz.ids 
+ 1412  head -n 5 tmp_to_keep.ids 
+ 1413  ls
+ 1414  wc ok_kunitz.ids tmp_to_keep.ids 
+ 1415  wc to_remove.ids tmp_pdb_kunitz_rp_clean_ids.txt 
+ 1416  head -n 5 tmp_pdb_kunitz_rp_clean_ids.txt 
+ 1417  head -n 5 to_remove.ids 
+ 1418  sort to_remove.ids | head -n 5
+ 1419  sort tmp_pdb_kunitz_rp_clean_ids.txt | head -n 5
+ 1420  comm -23 <(sort ./se) < (sort ./seq_ids/to_remove.ids) > sp_negs.id
+ 1421  comm -23 <(sort sp.ids) < (sort all_kunitz.id) | less
+ 1422  ls
+ 1423  wc ../../swissprot_data/negative_set.fasta 
+ 1424  grep ">" ../../swissprot_data/negative_set.fasta |wc
+ 1425  wc sp.ids 
+ 1426  cd ../../swissprot_data/
+ 1427  ls
+ 1428  grep ">" all_kunitz.fasta 
+ 1429  ls
+ 1430  grep ">" all_kunitz.fasta |wc
+ 1431  grep ">" negative_set.fasta |wc
+ 1432  grep ">" uniprot_sprot.fasta |wc
+ 1433  cd ../PDB-data/make_db_new/
+ 1434  ls
+ 1435  wc all_kunitz.id 
+ 1436  wc sp.ids 
+ 1437  comm -23 <(sort sp.ids) < (sort all_kunitz.id) > sp_negs.id
+ 1438  echo test | cat <(cat)
+ 1439  sort sp.ids > sp_sorted.ids
+ 1440  wc sp_sorted.ids 
+ 1441  sort all_kunitz.id > all_kunitz_sorted.ids
+ 1442  wc all_kunitz_sorted.ids 
+ 1443  comm -23 sp_sorted.ids all_kunitz_sorted.ids > sp_negs.id
+ 1444  wc sp_negs.id 
+ 1445  python get_seq.py sp_negs.id ../../swissprot_data/uniprot_sprot.fasta > sp_negs.fasta
+ 1446  cd ../..
+ 1447  cd swissprot_data/
+ 1448  ls
+ 1449  grep ">" negative_set.fasta |wc
+ 1450  cd ../PDB-data/make_db_new/
+ 1451  ls
+ 1452  grep ">" sp_negs.fasta |wc
+ 1453  ls
+ 1454  wc sp_negs.id 
+ 1455  python get_seq.py all_kunitz.id ../../swissprot_data/uniprot_sprot.fasta > sp_negs2.fasta
+ 1456  grep ">" sp_negs2.fasta |wc
+ 1457  ls
+ 1458  python get_seq.py sp_negs.id ../../swissprot_data/uniprot_sprot.fasta > sp_negs3.fasta
+ 1459  grep ">" sp_negs3.fasta |wc
+ 1460  grep ">" sp_negs2.fasta |wc
+ 1461  grep ">" sp_negs.fasta |wc
+ 1462  grep ">" ../../swissprot_data/negative_set.fasta |wc
+ 1463  ls
+ 1464  python get_seq.py sp_negs.id ../../swissprot_data/uniprot_sprot.fasta > sp_negs3.fasta
+ 1465  grep ">" ../../swissprot_data/negative_set.fasta |wc
+ 1466  grep ">" sp_negs3.fasta |wc
+ 1467  grep ">" sp_negs.fasta |wc
+ 1468  grep ">" sp_negs2.fasta |wc
+ 1469  grep ">" ok_kunitz.fasta |wc
+ 1470  ls
+ 1471  grep ">" ok_kunitz.ids |wc
+ 1472  ok_kunitz.ids |wc
+ 1473  wc ok_kunitz.ids 
+ 1474  mkdir seq_ids
+ 1475  mv *.id *.ids seq_ids/
+ 1476  ls
+ 1477  cd seq_ids/
+ 1478  ls
+ 1479  cd ..
+ 1480  mv *txt seq_ids/
+ 1481  ls
+ 1482  cd seq_ids/
+ 1483  ls
+ 1484  cd ..
+ 1485  ls
+ 1486  ls *.fasta
+ 1487  python get_seq.py ./seq_ids/ok_kunitz.ids ../../swissprot_data/uniprot_sprot.fasta > ok_kunitz.fasta
+ 1488  grep ">" ok_kunitz.fasta |wc
+ 1489  wc ./seq_ids/sp_negs.id 
+ 1490  wc ./seq_ids/sp.ids 
+ 1491  cd ./seq_ids/
+ 1492  sort -R sp_negs.id > random_sp_negs.id
+ 1493  wc random_sp_negs.id 
+ 1494  sort -R ok_kunitz.ids > random_ok_kunitz.ids
+ 1495  wc random_ok_kunitz.ids 
+ 1496  head -n 185 random_ok_kunitz.ids > pos_1.ids
+ 1497  wc pos_1.ids 
+ 1498  tail -n 185 random_ok_kunitz.ids > pos_2.ids
+ 1499  wc pos_2.ids 
+ 1500  echo "572832/2" |bc
+ 1501  head -n 286416 random_sp_negs.id > neg_1.ids
+ 1502  tail -n +286417 random_sp_negs.id > neg_2.ids
+ 1503  wc neg_1.ids 
+ 1504  wc neg_2.ids 
+ 1505  wc neg_* pos_*
+ 1506  ls
+ 1507  wc sp.ids 
+ 1508  grep ">" ../../../swissprot_data/uniprot_sprot.fasta |wc
+ 1509  cd ..
+ 1510  ls
+ 1511  python get_seq.py ./seq_ids/pos_1.ids ../../swissprot_data/uniprot_sprot.fasta > pos_1.fasta
+ 1512  python get_seq.py ./seq_ids/pos_2.ids ../../swissprot_data/uniprot_sprot.fasta > pos_2.fasta
+ 1513  grep ">" pos_1.fasta |wc
+ 1514  grep ">" pos_2.fasta |wc
+ 1515  python get_seq.py ./seq_ids/neg_1.ids ../../swissprot_data/uniprot_sprot.fasta > neg_1.fasta
+ 1516  grep ">" neg_1.fasta |wc
+ 1517  python get_seq.py ./seq_ids/neg_2.ids ../../swissprot_data/uniprot_sprot.fasta > neg_2.fasta
+ 1518  grep ">" neg_2.fasta |wc
+ 1519  ls
+ 1520  mkdir db
+ 1521  cd ..
+ 1522  ls
+ 1523  cd ../swissprot_data/
+ 1524  ls
+ 1525  grep ">" sp_negs.fasta 
+ 1526  ls
+ 1527  grep ">" sp_negs.fasta |wc
+ 1528  grep ">" ./others/negative_set.fasta |wc
+ 1529  ls ./others/
+ 1530  grep ">" ./others/positive_set.fasta |wc
+ 1531  grep ">" all_kunitz.fasta |wc
+ 1532  grep ">" ok_kunitz.fasta |wc
+ 1533  grep ">" ./others/filtered_positive_set.fasta |wc
+ 1534  cd ../
+ 1535  ls
+ 1536  cd PDB-data/
+ 1537  ls
+ 1538  cd make_test_sets/
+ 1539  ls
+ 1540  cd db/
+ 1541  ls
+ 1542  cd ../
+ 1543  ls
+ 1544  hmmsearch ../../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta |less
+ 1545  ls ./seq_ids/.
+ 1546  ls
+ 1547  rm random*
+ 1548  ls
+ 1549  cd seq_ids/
+ 1550  ls
+ 1551  wc all_kunitz.id 
+ 1552  wc ok_kunitz.ids 
+ 1553  wc sp.ids 
+ 1554  wc sp_negs.id 
+ 1555  wc to_remove.ids 
+ 1556  cd ..
+ 1557  ls
+ 1558  ls ./seq_ids/
+ 1559  python get_seq.py ./seq_ids/to_remove.ids all_kunitz.fasta |wc
+ 1560  grep ">" all_kunitz.fasta |wc
+ 1561  python get_seq.py ./seq_ids/to_remove.ids all_kunitz.fasta |wc
+ 1562  python get_seq.py ./seq_ids/to_remove.ids all_kunitz.fasta | grep ">" |wc
+ 1563  python get_seq.py ./seq_ids/to_remove.ids all_kunitz.fasta | less
+ 1564  grep ">" all_kunitz.fasta |cut -d "|" -f 2 |wc
+ 1565  grep ">" all_kunitz.fasta |cut -d "|" -f 2 |lss
+ 1566  grep ">" all_kunitz.fasta |cut -d "|" -f 2 |less
+ 1567  ws ./seq_ids/all_kunitz.id 
+ 1568  wc ./seq_ids/all_kunitz.id 
+ 1569  grep ">" all_kunitz.fasta |cut -d "|" -f 2 > all_kunitz.id
+ 1570  cd seq_ids/
+ 1571  ls
+ 1572  comm -23 <(sort all_kunitz.id) < (sort to_remove.ids) | less
+ 1573  sort all_kunitz.id > all_kunitz_sorted.id
+ 1574  sort to_remove.ids > to_remove_sorted.ids 
+ 1575  comm -23 <(sort all_kunitz_sorted.id) < (sort to_remove_sorted.ids) | less
+ 1576  comm -23 < all_kunitz_sorted.id < to_remove_sorted.ids | less
+ 1577  comm -23 all_kunitz_sorted.id to_remove_sorted.ids | less
+ 1578  comm -23 all_kunitz_sorted.id to_remove_sorted.ids > ok_kunitz.ids
+ 1579  wc ok_kunitz.ids 
+ 1580  ls
+ 1581  cd ../
+ 1582  python get_seq.py ./seq_ids/ok_kunitz.ids all_kunitz.fasta |less
+ 1583  python get_seq.py ./seq_ids/ok_kunitz.ids all_kunitz.fasta > ok_kunitz.fasta
+ 1584  less ok_kunitz.fasta 
+ 1585  grep ">" ok_kunitz.fasta |wc
+ 1586  ls
+ 1587  cd seq_ids/
+ 1588  ls
+ 1589  wc sp.ids 
+ 1590  rm sp.ids 
+ 1591  ls
+ 1592  grep ">" ../../../swissprot_data/uniprot_sprot.fasta |cut -d "|" -f 2 |less
+ 1593  grep ">" ../../../swissprot_data/uniprot_sprot.fasta |cut -d "|" -f
+ 1594  grep ">" ../../../swissprot_data/uniprot_sprot.fasta |cut -d "|" -f 2 > sp.ids
+ 1595  ls
+ 1596  wc sp.ids 
+ 1597  sort sp.ids > sp_sorted.ids
+ 1598  sort all_kunitz.id > all_kunitz_sorted.ids
+ 1599  comm -23 sp_sorted.ids all_kunitz_sorted.ids |less
+ 1600  comm -23 sp_sorted.ids all_kunitz_sorted.ids > sp_negs.id
+ 1601  wc sp_negs.id 
+ 1602  ls
+ 1603  comm -23 sp_sorted.ids all_kunitz_sorted.ids |wc
+ 1604  cd ..
+ 1605  ls
+ 1606  python get_seq.py ./seq_ids/sp_negs.id ../../swissprot_data/uniprot_sprot.fasta > sp_negs.fasta
+ 1607  less sp_negs.fasta 
+ 1608  ls
+ 1609  grep ">" sp_negs.fasta |wc
+ 1610  less ok_kunitz.fasta 
+ 1611  ls
+ 1612  less all_kunitz.fasta 
+ 1613  grep ">" ok_kunitz.fasta |wc
+ 1614  wc ./seq_ids/sp.ids 
+ 1615  wc ./seq_ids/sp_negs.id 
+ 1616  history
+ 1617  history | grep sort
+ 1618  history | grep sort -R
+ 1619  history | grep sort
+ 1620  sort -R sp_negs.id > ./seq_ids/random_sp_negs.id
+ 1621  sort -R ./seq_ids/sp_negs.id > ./seq_ids/random_sp_negs.id
+ 1622  sort -R ok_kunitz.ids > random_ok_kunitz.ids
+ 1623  cd seq_ids/
+ 1624  ls
+ 1625  sort -R ok_kunitz.ids > random_ok_kunitz.ids
+ 1626  ls
+ 1627  history | grep head
+ 1628  history | grep pos_1
+ 1629  history | grep head pos_1
+ 1630  ls
+ 1631  head -n 185 random_ok_kunitz.ids > pos_1.ids
+ 1632  ls
+ 1633  tail -n 185 random_ok_kunitz.ids > pos_2.ids
+ 1634  history | bc
+ 1635  history | |bc
+ 1636  history | grep |bc
+ 1637  history | grep echo
+ 1638  echo "572832/2" |bc
+ 1639  history | grep 286416
+ 1640  head -n 286416 random_sp_negs.id > neg_1.ids
+ 1641  ls
+ 1642  history | grep 286417
+ 1643  tail -n +286417 random_sp_negs.id > neg_2.ids
+ 1644  ls
+ 1645  wc pos* neg*
+ 1646  cd ../
+ 1647  python get_seq.py ./seq_ids/pos_1.ids ../../swissprot_data/uniprot_sprot.fasta |less
+ 1648  python get_seq.py ./seq_ids/pos_1.ids ../../swissprot_data/uniprot_sprot.fasta > pos_1.fasta
+ 1649  less pos_1.fasta 
+ 1650  grep "O93279" ./seq_ids/pos_1.ids | less
+ 1651  python get_seq.py ./seq_ids/pos_2.ids ../../swissprot_data/uniprot_sprot.fasta > pos_2.fasta
+ 1652  grep ">" pos_* |wc
+ 1653  echo "370/2" |bc
+ 1654  python get_seq.py ./seq_ids/neg_2.ids ../../swissprot_data/uniprot_sprot.fasta > neg_2.fasta
+ 1655  less neg_2.fasta 
+ 1656  python get_seq.py ./seq_ids/neg_1.ids ../../swissprot_data/uniprot_sprot.fasta > neg_1.fasta
+ 1657  less pos_1.fasta 
+ 1658  grep ">" pos_1.fasta |wc
+ 1659  grep ">" neg_1.fasta |wc
+ 1660  less neg_1.fasta 
+ 1661  history |grep hmmsearch
+ 1662  hmmsearch ../../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta |less
+ 1663  hmmsearch ../../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta |less
+ 1664  less pos_1.out
+ 1665  history
+ 1666  history > commands_history.txt
+ 1667  cd ../..
+ 1668  ls
+ 1669  cd others/
+ 1670  ls
+ 1671  history > ./commands_history.txt
+ 1672  echo $HISTFILE
+ 1673  cd 
+ 1674  cd ../..
+ 1675  cd home/sarehsalehi/
+ 1676  ls
+ 1677  history -a
+ 1678  cd ../..
+ 1679  cd home/sarehsalehi/
+ 1680  ls
+ 1681  cd anaconda3/
+ 1682  ls
+ 1683  history
+ 1684  cd ../..
+ 1685  cd 
+ 1686  cd ../..
+ 1687  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/Module-Emidio/project/final_tests_1/
+ 1688  ls
+ 1689  d make_test_sets/
+ 1690  cd make_test_sets/
+ 1691  ls
+ 1692  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta |less
+ 1693  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta > ../HMM/pos_1.out
+ 1694  less ../HMM/pos_1.out 
+ 1695  cd ../..
+ 1696  cd final_tests_1/
+ 1697  cd HMM/
+ 1698  ls
+ 1699  history |grep "cut"
+ 1700  grep -v "^#" pos_1.out |cut -d " " -f 1 |less
+ 1701  grep -v "^#" pos_1.out |cut -d " " -f 1 |wc
+ 1702  grep -v "^#" pos_1.out |cut -d " " -f1 |wc
+ 1703  cd ../make_test_sets/
+ 1704  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta |less
+ 1705  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm neg_1.fasta |less
+ 1706  history
+ 1707  cd ../..
+ 1708  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/Module-Emidio/project/final_tests_1/
+ 1709  ls
+ 1710  cd make_test_sets/
+ 1711  ls
+ 1712  history > ../others/commands_history_2.txt
+ 1713  hmmsearch --tblout pos_1.out ../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta 
+ 1714  ls
+ 1715  less pos_1.out 
+ 1716  grep -v "^#" pos_1.out |less
+ 1717  grep -v "^#" pos_1.out |cut -f1|less
+ 1718  grep -v "^#" pos_1.out |cut -f 1|less
+ 1719  grep -v "^#" pos_1.out |cut -d "" -f 1|less
+ 1720  grep -v "^#" pos_1.out |cut -d " " -f 1|less
+ 1721  grep -v "^#" pos_1.out |cut -d " " -f 1|wc
+ 1722  grep "^#" pos_1.out |less
+ 1723  hmmsearch --max --tblout pos_1.out ../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta 
+ 1724  grep -v "^#" pos_1.out |cut -d " " -f 1|wc
+ 1725  grep -v "^#" pos_1.out |cut -d " " -f1|wc
+ 1726  hmmsearch --max --tblout pos_2.out ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta 
+ 1727  grep -v "^#" pos_2.out |cut -d " " -f1|wc
+ 1728  hmmsearch -Z 1000 --max --tblout pos_2.out ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta 
+ 1729  hmmsearch -Z 1000 --max --tblout pos_1.out ../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta 
+ 1730  grep ">" neg_2.fasta |wc
+ 1731  grep ">" neg_1.fasta |wc
+ 1732  grep -v "^#" pos_1.out |less
+ 1733  grep -v "^#" pos_1.out |cut -d " " -f 1,5|less
+ 1734  grep -v "^#" pos_1.out |awk '{$1, $5}'|less
+ 1735  grep -v "^#" pos_1.out |awk '{$1 , $5}'|less
+ 1736  grep -v "^#" pos_1.out |awk '{$1 $5}'|less
+ 1737  grep -v "^#" pos_1.out |awk '{print $1 $5}'|less
+ 1738  grep -v "^#" pos_1.out |awk '{split($1, a, "|") ; print $1 $5}'|less
+ 1739   $5}'|less
+ 1740  grep -v "^#" pos_1.out |awk '{split($1, a, "|") ; print $1,$5}'|less
+ 1741  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],$5}'|less
+ 1742  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print $1,$5}'|less
+ 1743  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],$5}'|less
+ 1744  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],$5, $8}'|less
+ 1745  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],1, $5, $8}'|less
+ 1746  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2]"\t"1"\t"$5"\t"$8}'|less
+ 1747  grep -v "^#" pos_2.out |awk '{split($1, a, "\|") ; print a[2]"\t"1"\t"$5"\t"$8}
+ 1748  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],1,$5,$8}' |tr " " "\t" > less
+ 1749  grep -v "^#" pos_1.out |awk '{split($1, a, "|") ; print a[2],1,$5,$8}' |tr " " "\t" > less
+ 1750  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],1,$5,$8}' |tr " " "\t" |less
+ 1751  grep -v "^#" pos_1.out |awk '{split($1, a, "\|") ; print a[2],1,$5,$8}' |tr " " "\t" > pos_1.class
+ 1752  hmmsearch -Z 1000 --max --tblout pos_2.out ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta 
+ 1753  grep -v "^#" pos_2.out |awk '{split($1, a, "\|") ; print a[2],1,$5,$8}' |tr " " "\t" > pos_2.class
+ 1754  ls
+ 1755  wc *.class
+ 1756  awk '{print $1}' pos_1.class |sort -u |wc
+ 1757  awk '{print $1}' pos_2.class |sort -u |wc
+ 1758  hmmsearch -Z 1000 --max --tblout neg_2.out ../HMM/pdb_kunitz_nr_clean.hmm neg_2.fasta 
+ 1759  hmmsearch -Z 1000 --max --tblout neg_1.out ../HMM/pdb_kunitz_nr_clean.hmm neg_1.fasta 
+ 1760  grep -v "^#" neg_1.out |wc
+ 1761  grep -v "^#" neg_2.out |wc
+ 1762  grep -v "^#" neg_2.out |awk '{split($1, a, "\|") ; print a[2],0,$5,$8}' |tr " " "\t" > neg_2.class
+ 1763  grep -v "^#" neg_1.out |awk '{split($1, a, "\|") ; print a[2],0,$5,$8}' |tr " " "\t" > neg_1.class
+ 1764  less neg_1.class 
+ 1765  ls
+ 1766  wc seq_ids/neg_1.ids 
+ 1767  comm -23 < sort seq_ids/neg_1.ids < cut -f 1 neg_1.class | sort |wc
+ 1768  comm -23 <(sort seq_ids/neg_1.ids) <(cut -f 1 neg_1.class | sort) |wc
+ 1769  wc seq_ids/neg_1.ids 
+ 1770  wc neg_1.class 
+ 1771  ls
+ 1772  comm -23 <(sort seq_ids/neg_1.ids) <(cut -f 1 neg_1.class | sort) 
+ 1773  comm -23 <(sort seq_ids/neg_1.ids) <(cut -f 1 neg_1.class | sort) |wc
+ 1774  comm -23 <(sort seq_ids/neg_1.ids) <(cut -f 1 neg_1.class | sort) |awk '{print $1"\t0\t10.0\t10.0"}'|less
+ 1775  comm -23 <(sort seq_ids/neg_1.ids) <(cut -f 1 neg_1.class | sort) |awk '{print $1"\t0\t10.0\t10.0"}' >> neg_1.class
+ 1776  wc neg_1.class 
+ 1777  wc seq_ids/neg_1.ids 
+ 1778  comm -23 <(sort seq_ids/neg_2.ids) <(cut -f 1 neg_2.class | sort) |awk '{print $1"\t0\t10.0\t10.0"}'|less
+ 1779  comm -23 <(sort seq_ids/neg_2.ids) <(cut -f 1 neg_2.class | sort) |awk '{print $1"\t0\t10.0\t10.0"}' >> neg_2.class
+ 1780  wc neg_2.class 
+ 1781  wc seq_ids/neg_2.ids 
+ 1782  cat pos_1.class neg_1.class > set_1.class
+ 1783  cat pos_2.class neg_2.class > set_2.class
+ 1784  ls
+ 1785  python performance.py set_1.class 1e-5
+ 1786  for i in 'seq 1 12'; do python performance.py set_1.class 1e-$i; done
+ 1787  history |grep pos_1.out
+ 1788  history |grep HMM/pos_1.out
+ 1789  history |grep pos_1.out
+ 1790  history |grep HMM/pos_1.out
+ 1791  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta > ../HMM/pos_3.out
+ 1792  for i in {1..12}; do     python performance.py set_1.class 1e-$i; done
+ 1793  for i in {1..12}; do     python performance.py set_2.class 1e-$i; done
+ 1794  python performance.py set_1.class 5e-6
+ 1795  python performance.py set_2.class 5e-6
+ 1796  python performance.py <(cat set_1.class set_2.class ) 1e-6
+ 1797  history > commands_history_3.txt
+ 1798  cd ../..
+ 1799  cd final
+ 1800  cd final_tests_1/
+ 1801  cd others/
+ 1802  ls
+ 1803  history > ./commands_history_3.txt
+ 1804  ls
+ 1805  cd ../make_test_sets/
+ 1806  ls
+ 1807  rm commands_history_3.txt 
+ 1808  ls
+ 1809  cd ../others/
+ 1810  ls
+ 1811  cd ../..
+ 1812  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/Module-Emidio/project/practicing/
+ 1813  ls
+ 1814  gunzip PF00014.hmm.gz 
+ 1815  ls
+ 1816  cd ../final_tests_1/
+ 1817  ls
+ 1818  cd make_test_sets/
+ 1819  ls
+ 1820  for i in {1..12}; do     python performance.py set_2.class 1e-$i; done
+ 1821  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta |less
+ 1822  less pos_1.out 
+ 1823  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta |less
+ 1824  hmmsearch ../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta |less
+ 1825  python performance.py set_2.class 1e-5
+ 1826  python performance.py set_2.class
+ 1827  python performance.py set_2.class 1e-5
+ 1828  python ../HMM/performance.py set_2.class 1e-5
+ 1829  for i in {1..12}; do     python ../HMM/performance.py set_2.class 1e-$i; done
+ 1830  for i in {1..12}; do     python performance.py set_2.class 1e-$i; done
+ 1831  for i in {1..12}; do     python performance.py set_1.class 1e-$i; done
+ 1832  hmmalign -o ../others/pos_1.sto ../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta
+ 1833  cd ../others/
+ 1834  ls
+ 1835  esl-reformat fasta pos_1.sto > pos_1.fasta
+ 1836  esl-reformat fasta pos_1.sto > pos_1_clean.fasta
+ 1837  esl-reformat fasta pos_1_clean.fasta > pos_1_fixed.fasta
+ 1838  awk '{if(NR%2==0) print length($0)}' pos_1.fasta | sort -u
+ 1839  awk '{if(NR%2==0) print length($0)}' pos_1_clean.fasta | sort -u
+ 1840  awk '{if(NR%2==0) print length($0)}' pos_1_fixed.fasta | sort -u
+ 1841  hmmalign -o pos_1.sto ../HMM/pdb_kunitz_nr_clean.hmm ../make_test_sets/pos_1.fasta
+ 1842  esl-reformat fasta pos_1.sto > pos_1_fixed.fasta
+ 1843  awk -F "|" '{print ">" $1; getline; print}' pos_1_fixed.fasta > pos_1_clean.fasta
+ 1844  awk -F "|" '{print ">" $1 "|" $2; getline; print}' pos_1_fixed.fasta > pos_1_clean.fasta
+ 1845  esl-reformat fasta pdb_kunitz_nr_clean.ali > test_1.fasta
+ 1846  cd ../..
+ 1847  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/Module-Emidio/project/final_test_1/
+ 1848  ls
+ 1849  cd swissprot_data/
+ 1850  ls
+ 1851  grep ">" all_kunitz.fasta 
+ 1852  grep ">" all_kunitz.fasta |wc
+ 1853  ls
+ 1854  grep ">" uniprot_sprot.fasta |wc
+ 1855  cd ../make_test_sets/
+ 1856  ls
+ 1857  grep ">" all_kunitz.fasta |wc
+ 1858  grep ">" ok_kunitz.fasta |wc
+ 1859  grep ">" *.fasta |wc
+ 1860  grep ">" *fasta |wc
+ 1861  grep ">" *fasta | ls|wc
+ 1862  for file in *.fasta; do   echo "Processing: $file";   grep ">" "$file" | wc; done
+ 1863  for file in *.fasta; do   echo "$file";   grep ">" "$file" | wc; done
+ 1864  history
+ 1865  cd ../..
+ 1866  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/Module-Emidio/project/final_test_2/PDB_data/
+ 1867  ls
+ 1868  history
+ 1869  awk '{if (substr($1, 1, 1) == ">") print "\n"toupper($1) } else {print "%s", toupper($1)}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|less
+ 1870  awk '{if (substr($1, 1, 1) == ">") print "\n"toupper($1)} else {print "%s", toupper($1)}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|less
+ 1871  awk '{if (substr($1, 1, 1) == ">") print "\n"toupper($1)} else {printf "%s", toupper($1)}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|less
+ 1872  awk '{if (substr($1,1,1)==">") {print "\n"toupper($1)} else {printf "%s", toupper($1)}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|less
+ 1873  awk '{if (substr($1,1,1)==">") {print "\n"toupper($1)} else {printf "%s", toupper($1)}}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|less
+ 1874  awk '{if (substr($1,1,1)==">") {print "\n"toupper($1)} else {printf "%s", toupper($1)}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|less
+ 1875  awk '{if (substr($1,1,1)==">\") {print toupper($1)} else {printf "%s", toupper($1)}}' pdb_kunitz_nr.ali | sed 's/PDB://' | tail -n +2 | less
+ 1876  awk '{if (substr($1,1,1)==">") {print "\n"toupper($1)} else {printf "%s", toupper($1)}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|grep ">" | wc
+ 1877  awk '{if (substr($1,1,1)==">") {print "\n"toupper($1)} else {printf "%s", toupper($1)}}' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|grep ">" | wc
+ 1878  awk '{if (substr($1,1,1)==">") {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali | sed s/PDB:// |tail -n +2|grep ">" | wc
+ 1879  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 |less
+ 1880  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1881  ls
+ 1882  less pdb_kunitz_nr.ali 
+ 1883  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1884  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' ./../../final_test_1/PDB-data/ pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1885  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' ./../../final_test_1/PDB-data/ pdb_kunitz_nr.fasta |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1886  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1887  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | less
+ 1888  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |less
+ 1889  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 > pdb_kunitz_nr_clean.ali
+ 1890  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1891  wc pdb_kunitz_nr_clean.ali |grep ">"
+ 1892  grep ">" pdb_kunitz_nr_clean.ali |wc
+ 1893  awk '{if (substr($1,1,1)==">" ) {print "\n"toupper($1)} else {printf "%s", toupper($1)} }' pdb_kunitz_nr.ali |sed s/PDB:// |tail -n +2 | grep ">" |wc
+ 1894  grep ">" pdb_kunitz_nr_clean.ali |wc
+ 1895  clstr2txt.pl pdb_kunitz.clust.clstr | awk '{if ($5 ==1) print $0}' | wc
+ 1896  clstr2txt.pl pdb_kunitz.clust.clstr | awk '{if ($5 ==1) print $0}' | less
+ 1897  clstr2txt.pl pdb_kunitz.clust.clstr |less
+ 1898  clstr2txt.pl pdb_kunitz.clust.clstr | awk '{if ($5 ==1) print $0}' | wc
+ 1899  grep ">" pdb_kunitz_nr.fasta | صز
+ 1900  grep ">" pdb_kunitz_nr.fasta | wc
+ 1901  grep ">" pdb_kunitz_nr.fasta | grep -v 2ODY_E |wc
+ 1902  grep ">" pdb_kunitz_nr_clean.ali
+ 1903  grep ">" pdb_kunitz_nr_clean.ali | wc
+ 1904  cd ..
+ 1905  mkdir HMM
+ 1906  cd HMM/
+ 1907  LS
+ 1908  ls
+ 1909  hmmbuild pdb_kunitz_nr_clean.hmm ../PDB_data/pdb_kunitz_nr_clean.ali 
+ 1910  less pdb_kunitz_nr_clean.hmm 
+ 1911  cd ..
+ 1912  ls
+ 1913  cd swissprot_data/
+ 1914  gunzip uniprotkb_xref_pfam_pf00014_AND_reviewe_2025_06_07.fasta.gz 
+ 1915  mv uniprotkb_xref_pfam_pf00014_AND_reviewe_2025_06_07.fasta all_kunitz.fasta
+ 1916  ls
+ 1917  grep ">" all_kunitz.fasta |wc
+ 1918  مس
+ 1919  ls
+ 1920  grep ">" uniprot_sprot.fasta |wc
+ 1921  grep -v -F -f all_kunitz.fasta uniprot_sprot.fasta > negative_seq.fasta
+ 1922  مس
+ 1923  ls
+ 1924  grep ">" negative_seq.fasta |wc
+ 1925  مس
+ 1926  ls
+ 1927  grep ">" all_kunitz.fasta |wc
+ 1928  grep ">" sp_negs.fasta |wc
+ 1929  grep ">" uniprot_sprot.fasta |wc
+ 1930  cd ..
+ 1931  ls
+ 1932  mkdir test_train_data
+ 1933  cd test_train_data/
+ 1934  ls
+ 1935  makeblastdb -in ../swissprot_data/all_kunitz.fasta -input_type fasta -dbtype prot -out all_kunitz.fasta
+ 1936  blastp -query pdb_kunitz_nr_23.fasta -db all_kunitz.fasta -out pdb_kunitz_nr_23.blast -outfmt 7
+ 1937  blastp -query ../PDB_data/pdb_kunitz_nr_clean.ali -db ./redundant_seq/all_kunitz.fasta -out ./redundant_seq/pdb_kunitz_nr_23.blast -outfmt 7
+ 1938  cd redundant_seq/
+ 1939  ls
+ 1940  cd ..
+ 1941  blastp -query ../PDB_data/pdb_kunitz_nr.fasta -db ./redundant_seq/all_kunitz.fasta -out ./redundant_seq/pdb_kunitz_nr_23.blast -outfmt 7
+ 1942  cd redundant_seq/
+ 1943  less pdb_kunitz_nr_23.blast 
+ 1944  wc pdb_kunitz_nr_23.blast 
+ 1945  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=50) print $2}' |less
+ 1946  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=50) print $0}' |less
+ 1947  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=50) print $0}' |wc
+ 1948  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=50) print $2}' |wc
+ 1949  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=45) print $2}' |wc
+ 1950  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=50) print $2}' |wc
+ 1951  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4 >=40) print $2}' |wc
+ 1952  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=40) print $2}' |wc
+ 1953  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=40) print $2}' |sort -u |wc
+ 1954  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=50) print $2}' |sort -u |wc
+ 1955  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=50) print $2}' |مثسس
+ 1956  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=50) print $2}' |less
+ 1957  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=50) print $2}' |cut -d "|" -f 2 |less
+ 1958  mkdir ../id_files
+ 1959  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=50) print $2}' |cut -d "|" -f 2 > ../id_files/to_remove_ids
+ 1960  rm ../id_files/to_remove_ids 
+ 1961  grep -v "^#" pdb_kunitz_nr_23.blast |awk '{if ($3 >=95 && $4>=50) print $2}' |cut -d "|" -f 2 > ../id_files/to_remove.ids
+ 1962  ls
+ 1963  python get_seq.py ../id_files/to_remove.ids ../../swissprot_data/all_kunitz.fasta |less
+ 1964  python get_seq.py ../id_files/to_remove.ids ../../swissprot_data/all_kunitz.fasta |grep ">" |wc
+ 1965  grep ">" ../../swissprot_data/all_kunitz.fasta |cut -d "|" -f 2 |wc
+ 1966  grep ">" ../../swissprot_data/all_kunitz.fasta |cut -d "|" -f 2 |less
+ 1967  grep ">" ../../swissprot_data/all_kunitz.fasta |cut -d "|" -f 2 > ../id_files/all_kunitz.ids
+ 1968  ls ../id_files/
+ 1969  wc ../id_files/all_kunitz.ids 
+ 1970  wc ../id_files/to_remove.ids 
+ 1971  cd ../id_files/
+ 1972  comm -23 <(sort all_kunitz.ids) <(sort to_remove.ids )|less
+ 1973  comm -23 <(sort all_kunitz.ids) <(sort to_remove.ids ) >ok_kunitz.ids
+ 1974  ls
+ 1975  wc ok_kunitz.ids 
+ 1976  python get_seq.py to_remove.ids ../swissprot_data/all_kunitz.fasta |grep ">" |wc
+ 1977  python ../redundant_seq/get_seq.py ok_kunitz.ids ../swissprot_data/all_kunitz.fasta |grep ">" |wc
+ 1978  python ../redundant_seq/get_seq.py ok_kunitz.ids ../../swissprot_data/all_kunitz.fasta |grep ">" |wc
+ 1979  python ../redundant_seq/get_seq.py ok_kunitz.ids ../../swissprot_data/all_kunitz.fasta > ../redundant_seq/ok_kunitz.fasta
+ 1980  cd ../redundant_seq/
+ 1981  ls
+ 1982  grep ">" ../../swissprot_data/uniprot_sprot.fasta |less
+ 1983  grep ">" ../../swissprot_data/uniprot_sprot.fasta |wc
+ 1984  grep ">" ../../swissprot_data/uniprot_sprot.fasta |cut -d "|" -f2 |less
+ 1985  grep ">" ../../swissprot_data/uniprot_sprot.fasta |cut -d "|" -f2 > ../id_files/sp.ids
+ 1986  ls ../id_files/
+ 1987  wc ../id_files/sp.ids 
+ 1988  comm -23 <(sort ../id_files/sp.ids) <(../id_files/all_kunitz.ids ) > sp_negs.ids
+ 1989  cd ../..
+ 1990  cd mnt/d/bioinfo-semester2/laboratiry-of-bioinformatics-1/Module-Emidio/project/final_test_2/
+ 1991  ls
+ 1992  cd test_train_data/
+ 1993  ls
+ 1994  comm -23 <(sort ../id_files/sp.ids) <(../id_files/all_kunitz.ids ) > sp_negs.ids
+ 1995  comm -23 <(sort ./id_files/sp.ids) <(./id_files/all_kunitz.ids) > sp_negs.ids
+ 1996  cd id_files/
+ 1997  l
+ 1998  ls
+ 1999  comm -23 <(sort sp.ids) <(sort all_kunitz.ids) > sp_negs.ids
+ 2000  ls
+ 2001  comm -23 <(sort sp.ids) <(sort all_kunitz.ids) > sp_negs.ids sort
+ 2002  wc sp_negs.ids 
+ 2003  ls
+ 2004  comm -23 <(sort sp.ids) <(sort all_kunitz.ids) > sp_negs.ids
+ 2005  wc sp_negs.ids 
+ 2006  wc sp.ids 
+ 2007  grep ">" ../../swissprot_data/uniprot_sprot.fasta |cut -d "|" -f2 |sort > sp.ids
+ 2008  grep ">" ../../swissprot_data/all_kunitz.fasta |cut -d "|" -f2 |sort > all_kunitz.ids
+ 2009  wc all_kunitz.ids 
+ 2010  wc sp.ids 
+ 2011  comm -23 sp.ids all_kunitz.ids |wc
+ 2012  comm -23 (sort sp.ids)< (sort all_kunitz.ids) |wc
+ 2013  comm -23 (sort sp.ids) < (sort all_kunitz.ids) |wc
+ 2014  comm -23 <(sort sp.ids) < (sort all_kunitz.ids) |wc
+ 2015  comm -23 <(sort sp.ids) <(sort all_kunitz.ids) |wc
+ 2016  comm -23 <(sort sp.ids) <(sort all_kunitz.ids) > sp_negs.ids
+ 2017  wc sp_negs.ids 
+ 2018  comm -23 <(sort sp.ids) <(sort all_kunitz.ids) > sp_negs.ids
+ 2019  ls
+ 2020  python ../redundant_seq/get_seq.py sp_negs.ids ../../swissprot_data/uniprot_sprot.fasta > ../final_files/sp_negs.fasta
+ 2021  cd ../final_files/
+ 2022  ls
+ 2023  grep ">" sp_negs.fasta |wc
+ 2024  cd ../id_files/
+ 2025  sort -R sp_negs.ids > random_sp_negs.ids
+ 2026  sort -R all_kunitz.ids > random_all_kunitz.ids
+ 2027  ls
+ 2028  wc random_all_kunitz.ids 
+ 2029  sort -R ok_kunitz.ids > random_ok_kunitz.ids
+ 2030  wc random_ok_kunitz.ids 
+ 2031  head -n 184 random_ok_kunitz.ids > pos_1.ids
+ 2032  tail -n 184 random_ok_kunitz.ids > pos_2.ids
+ 2033  ls
+ 2034  wc sp_negs.ids 
+ 2035  echo "572832/2" |bc
+ 2036  head -n 286416 random_sp_negs.ids > neg_1.ids
+ 2037  tail -n +286417 random_sp_negs.ids > neg_2.ids
+ 2038  wc neg_* pos_*
+ 2039  tail -n +286417 random_sp_negs.ids > neg_2.ids
+ 2040  wc neg_* pos_*
+ 2041  ls
+ 2042  cd ../
+ 2043  ls
+ 2044  cd redundant_seq/
+ 2045  ls
+ 2046  python get_seq.py ../id_files/pos_1.ids ../../swissprot_data/uniprot_sprot.fasta > ../final_files/pos_1.fasta
+ 2047  python get_seq.py ../id_files/pos_2.ids ../../swissprot_data/uniprot_sprot.fasta > ../final_files/pos_2.fasta
+ 2048  python get_seq.py ../id_files/neg_2.ids ../../swissprot_data/uniprot_sprot.fasta > ../final_files/neg_2.fasta
+ 2049  grep ">" ../final_files/neg_2.fasta |wc
+ 2050  python get_seq.py ../id_files/neg_1.ids ../../swissprot_data/uniprot_sprot.fasta > ../final_files/neg_1.fasta
+ 2051  grep ">" ../final_files/neg_1.fasta |wc
+ 2052  cd ../
+ 2053  ls
+ 2054  cd final_files/
+ 2055  hmmsearch ../../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta |less
+ 2056  hmmsearch --max --tblout pos_1.out ../../HMM/pdb_kunitz_nr_clean.hmm pos_1.fasta
+ 2057  grep -v "^#" pos_1.out |cut -d " " -f1 |wc
+ 2058  hmmsearch --max --tblout pos_2.out ../../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta
+ 2059  grep -v "^#" pos_2.out |cut -d " " -f1 |wc
+ 2060  hmmsearch -Z 1000 --max --tblout pos_2.out ../../HMM/pdb_kunitz_nr_clean.hmm pos_2.fasta
+ 2061  grep -v "^#" pos_2.out |cut -d " " -f1 |wc
+ 2062  grep -v "^#" pos_1.out |cut -d " " -f1 |wc
+ 2063  grep ">" ../final_files/neg_1.fasta |wc
+ 2064  grep ">" ../final_files/neg_2.fasta |wc
+ 2065  grep ">" pos_1.out |wc
+ 2066  grep ">" pos_2.out |wc
+ 2067  wc pos_1.out 
+ 2068  wc pos_2.out 
+ 2069  wc neg_1.out 
+ 2070  wc neg_1.fasta 
+ 2071  wc neg_2.fasta 
+ 2072  grep ">" neg_1.fasta |wc
+ 2073  grep ">" pos_1.fasta |wc
+ 2074  grep -v "^#" pos_2.out |cut -d " " -f1 |wc
+ 2075  grep -v "^#" pos_1.out |cut -d " " -f1 |wc
+ 2076  grep -v "^#" pos_1.out |cut -d " " -f1 |less
+ 2077  grep -v "^#" pos_1.out |cut -d " " -f 1,5|less
+ 2078  grep -v "^#" pos_1.out |awk '{print $1, $5}'|less
+ 2079  grep -v "^#" pos_1.out |awk '{split($1, a, "|"); print $1, $5}'|less
+ 2080  grep -v "^#" pos_1.out |awk '{print $1, $5}'|less
+ 2081  grep -v "^#" pos_1.out |awk '{split($1, a, "|"); print $1, $5}'|less
+ 2082  grep -v "^#" pos_1.out |awk '{split($1, a, "\|"); print a[2], $5}'|less
+ 2083  grep -v "^#" pos_1.out |awk '{split($1, a, "\|"); print a[2], $5, $8}'|less
+ 2084  grep -v "^#" pos_1.out |awk '{split($1, a, "\|"); print a[2]"\t"1"\t"$5"\t"$8}'|less
+ 2085  grep -v "^#" pos_1.out |awk '{split($1, a, "\|"); print a[2],1, $5, $8}'|tr " " "\t" |less
+ 2086  grep -v "^#" pos_1.out |awk '{split($1, a, "\|"); print a[2],1, $5, $8}'|tr " " "\t" > pos_1.class
+ 2087  grep -v "^#" pos_2.out |awk '{split($1, a, "\|"); print a[2],1, $5, $8}'|tr " " "\t" > pos_2.class
+ 2088  wc pos_1.class 
+ 2089  wc pos_2.class 
+ 2090  awk '{print $1}' pos_1.class |sort -u |wc
+ 2091  awk '{print $1}' pos_2.class |sort -u |wc
+ 2092  hmmsearch -Z 1000 --max --tblout neg_2.out ../../HMM/pdb_kunitz_nr_clean.hmm neg_2.fasta
+ 2093  hmmsearch -Z 1000 --max --tblout neg_1.out ../../HMM/pdb_kunitz_nr_clean.hmm neg_1.fasta
+ 2094  grep -v "^#" pos_2.out |wc
+ 2095  grep -v "^#" neg_2.out |wc
+ 2096  grep -v "^#" neg_1.out |wc
+ 2097  grep -v "^#" neg_2.out |awk '{split($1, a, "\|"); print a[2],0, $5, $8}'|tr " " "\t" > neg_2.class
+ 2098  grep -v "^#" neg_1.out |awk '{split($1, a, "\|"); print a[2],0, $5, $8}'|tr " " "\t" > neg_1.class
+ 2099  wc ../id_files/neg_1.ids 
+ 2100  comm -23 <(sort ../id_files/neg_1.ids) <(cut -f 1 neg_1.class |sort) |wc
+ 2101  wc ../id_files/neg_1.ids 
+ 2102  grep ">" neg_1.fasta |wc
+ 2103  grep -v "^#" neg_1.out |wc
+ 2104  wc neg_1.out 
+ 2105  wc neg_1.class 
+ 2106  grep -v "^#" neg_1.class |wc
+ 2107  comm -23 <(sort ../id_files/neg_1.ids) <(cut -f 1 neg_1.class | sort) | awk '{print $1"\t0\t10.0\t10.0"}' |less
+ 2108  comm -23 <(sort ../id_files/neg_1.ids) <(cut -f 1 neg_1.class | sort) | awk '{print $1"\t0\t10.0\t10.0"}' >> neg_1.class 
+ 2109  ls
+ 2110  wc neg_1.class 
+ 2111  wc neg_2.class 
+ 2112  comm -23 <(sort ../id_files/neg_2.ids) <(cut -f 1 neg_2.class | sort) | awk '{print $1"\t0\t10.0\t10.0"}' >> neg_2.class 
+ 2113  wc neg_2.class 
+ 2114  wc ../id_files/neg_2.ids 
+ 2115  cat pos_1.class neg_1.class > set_1.class
+ 2116  cat pos_2.class neg_2.class > set_2.class
+ 2117  history
+ 2118  history > ../../commands.txt

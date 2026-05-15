@@ -1,0 +1,22 @@
+{
+  "version": "1.2",
+  "dbname": "all_kunitz.fasta",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "../swissprot_data/all_kunitz.fasta",
+  "number-of-letters": 77279,
+  "number-of-sequences": 398,
+  "last-updated": "2025-06-07T16:15:00",
+  "number-of-volumes": 1,
+  "bytes-total": 189869,
+  "bytes-to-cache": 80990,
+  "files": [
+    "all_kunitz.fasta.pdb",
+    "all_kunitz.fasta.phr",
+    "all_kunitz.fasta.pin",
+    "all_kunitz.fasta.pot",
+    "all_kunitz.fasta.psq",
+    "all_kunitz.fasta.ptf",
+    "all_kunitz.fasta.pto"
+  ]
+}

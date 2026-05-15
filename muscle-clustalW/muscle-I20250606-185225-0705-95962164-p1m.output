@@ -1,0 +1,94 @@
+Started Fri Jun  6 18:52:34 2025
+/muscle/bin/muscle -in muscle-I20250606-185225-0705-95962164-p1m.sequence -verbose -log muscle-I20250606-185225-0705-95962164-p1m.output -quiet -clw -out muscle-I20250606-185225-0705-95962164-p1m.clw 
+Alphabet Amino
+
+MUSCLE v3.8.425 by Robert C. Edgar
+http://www.drive5.com/muscle
+
+Profile-profile score    LE
+Max iterations           8
+Max trees                1
+Max time                 (No limit)
+Max MB                   4294966866
+Gap open                 -2.9
+Gap extend (dimer)       0
+Gap ambig factor         0
+Gap ambig penalty        -0
+Center (LE)              -0.52
+Term gaps                Half
+Smooth window length     7
+Refine window length     200
+Min anchor spacing       32
+Min diag length (lambda) 24
+Diag margin (mu)         5
+Min diag break           1
+Hydrophobic window       5
+Hydrophobic gap factor   1.2
+Smooth score ceiling     3
+Min best col score       2
+Min anchor score         1
+SUEFF                    0.1
+Brenner root MSA         False
+Normalize counts         True
+Diagonals (1)            False
+Diagonals (2)            False
+Anchors                  True
+MSF output format        False
+Phylip interleaved       False
+Phylip sequential        False
+ClustalW output format   True
+Catch exceptions         True
+Quiet                    True
+Refine                   False
+ProdfDB                  False
+Low complexity profiles  True
+Objective score          SPM
+Distance method (1)      Kmer6_6
+Clustering method (1)    UPGMB
+Root method (1)          Pseudo
+Sequence weighting (1)   ClustalW
+Distance method (2)      PctIdKimura
+Clustering method (2)    UPGMB
+Root method (2)          Pseudo
+Sequence weighting (2)   ClustalW
+
+Elapsed time 00:00:00  Peak memory use   11 MB(-2%)  Iteration   1 K-mer dist pass 1
+Elapsed time 00:00:00  Peak memory use   11 MB(-2%)  Iteration   1 K-mer dist pass 2
+Align: (1BUN_B) (4U30_X)
+Align: (6Q61_A) (6YHY_A)
+Align: (3WNY_A) (5JB7_A)
+Align: (1F5R_I) (1YLD_B)
+Align: (1FAK_I) (1F5R_I,1YLD_B)
+Align: (3WNY_A,5JB7_A) (1FAK_I,1F5R_I,1YLD_B)
+Align: (3BYB_A) (4U32_X)
+Align: (1ZR0_B) (3BYB_A,4U32_X)
+Align: (4BQD_A) (6BX8_B)
+Align: (5JBT_Y) (5NX1_C)
+Align: (2ODY_E) (3M7Q_B)
+Align: (5JBT_Y,5NX1_C) (2ODY_E,3M7Q_B)
+Align: (1YC0_I) (5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (4BQD_A,6BX8_B) (1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (1KNT_A) (4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (5YV7_A) (1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (1ZR0_B,3BYB_A,4U32_X) (5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (4DTG_K) (1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (1DTX_A) (4DTG_K,1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (3WNY_A,5JB7_A,1FAK_I,1F5R_I,1YLD_B) (1DTX_A,4DTG_K,1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (6Q61_A,6YHY_A) (3WNY_A,5JB7_A,1FAK_I,1F5R_I,1YLD_B,1DTX_A,4DTG_K,1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (1BUN_B,4U30_X) (6Q61_A,6YHY_A,3WNY_A,5JB7_A,1FAK_I,1F5R_I,1YLD_B,1DTX_A,4DTG_K,1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (5M4V_A) (1BUN_B,4U30_X,6Q61_A,6YHY_A,3WNY_A,5JB7_A,1FAK_I,1F5R_I,1YLD_B,1DTX_A,4DTG_K,1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Align: (4NTW_B) (5M4V_A,1BUN_B,4U30_X,6Q61_A,6YHY_A,3WNY_A,5JB7_A,1FAK_I,1F5R_I,1YLD_B,1DTX_A,4DTG_K,1ZR0_B,3BYB_A,4U32_X,5YV7_A,1KNT_A,4BQD_A,6BX8_B,1YC0_I,5JBT_Y,5NX1_C,2ODY_E,3M7Q_B)
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   1 Align node
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   1 Root alignment
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   2 Refine tree
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   2 Root alignment
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   2 Root alignment
+Anchor columns found       1
+DP area saved by anchors   45.8%
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   3 Refine biparts
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   4 Refine biparts
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   5 Refine biparts
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   5 Refine biparts
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   6 Refine biparts
+Elapsed time 00:00:00  Peak memory use   14 MB(-3%)  Iteration   7 Refine biparts
+Finished Fri Jun  6 18:52:34 2025
