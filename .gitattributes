@@ -1,7 +1,3 @@
-*.fasta linguist-generated=true
-*.ali linguist-generated=true
-*.hmm linguist-generated=true
-*.blast linguist-generated=true
-*.out linguist-generated=true
-*.class linguist-generated=true
-*.ids linguist-generated=true
+* linguist-generated=true
+*.py linguist-generated=false
+*.sh linguist-generated=false
